@@ -100,9 +100,9 @@ The value is 0x0. The gdb command *p init_page_dir[pd_no(ptov(0))]* was used.
 2. Value returned is 0xc0103000.
 3. The value is 1056807.
 
-##Exercise 4
+## Exercise 4
 
-###Implementing a kernel shell
+### Implementing a kernel shell
 
 A small shell was incorporated into the kernel. It can handle only two commands: 'whoami' and 'exit'.
 
