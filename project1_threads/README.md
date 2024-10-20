@@ -2,7 +2,6 @@
 
 ## Exercise 1: Booting PintOS
 
-### Answer
 After generating the kernal image in the threads folder, the 'pintos --gdb -- run mystest' command was executed. Subsequently, in another other terminal, the pintos wrapper for gdb, 'pintos-gdb' was executed and connection to QEMU was established using the 'debugpintos' macro.
 
 ![Successful booting of PintOS on QEMU](./images/booting.png)
@@ -82,10 +81,62 @@ The address is stored in a variable called start and a long jump to that address
 ljmp *start
 ```
 
+### At the entry of pintos_init(), what is the value of expression init_page_dir[pd_no(ptov(0))] in hexadecimal format?
 
-## Additional Notes
-Any extra observations, challenges faced, or interesting points about the project
+The value is 0x0. The gdb command *p init_page_dir[pd_no(ptov(0))]* was used.
+
+### When palloc_get_page() is called for the first time,
+### 1.what does the call stack look like?
+### 2.what is the return value in hexadecimal format?
+### 3.what is the value of expression init_page_dir[pd_no(ptov(0))] in hexadecimal format?
+
+1. ![Stack frame when palloc_get_page() is called](./images/stack.png)
+2. The return type is int32_t. Command used was *ptype $eax*.
+3. The value is 0x0
+
+### When palloc_get_page() is called for the third time,
+
+1. ![Stack frame when palloc_get_page() is called 3 times](./images/stack3.png)
+2. Value returned is 0xc0103000.
+3. The value is 1056807.
+
+##Exercise 4
+
+###Implementing a kernel shell
+
+A small shell was incorporated into the kernel. It can handle only two commands: 'whoami' and 'exit'.
+
+```c
+while(true)
+    {
+    	int i = 0;
+	char c;
+	char command[MAX_COMMAND_LENGTH];
+	printf("\n>CS316\n");
+	while ((c = input_getc()) != '\n' && c != '\r' && i < MAX_COMMAND_LENGTH - 1) {
+	  command[i++] = c;
+	  putchar(c);  // Echo the character back to the console
+	}
+	command[i] = '\0';  // Null-terminate the string
+	
+	if(strcmp(command, "whoami") == 0)
+	{
+	   printf("\nHi,this is Abhishek");
+	}
+	else if(strcmp(command, "exit") == 0)
+	{
+	   printf("\nExiting");
+	   intr_enable();
+	   break;
+	}
+	else
+	{
+	   printf("\nInvalid command");
+	}
+    }
+```
+![Kernel shell](./images/shell.png)
+
 
 ## References
-- [Link to relevant Pintos documentation]
-- [Other resources used]
+- https://www.cs.jhu.edu/~huang/cs318/fall21/project/pintos_2.html#SEC24
